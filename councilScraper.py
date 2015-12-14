@@ -1,5 +1,6 @@
 import csv
 import requests
+import re
 
 from BeautifulSoup import BeautifulSoup
 
@@ -12,4 +13,13 @@ td = soup.find('td', attrs={'class' : 'nav_text'})
 
 text = td.text.replace('&nbsp;', '')
 
-print text
+
+phoneWithName = re.search("((Legislative Office Phone)+.{12})", text)
+
+print phoneWithName.group(1)
+
+string = "".join(re.findall('\d+', phoneWithName.group(1)))
+
+
+
+print string
