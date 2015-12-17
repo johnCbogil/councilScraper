@@ -13,13 +13,9 @@ td = soup.find('td', attrs={'class' : 'nav_text'})
 
 text = td.text.replace('&nbsp;', '')
 
-
-phoneWithName = re.search("((Legislative Office Phone)+.{12})", text)
-
-print phoneWithName.group(1)
-
-string = "".join(re.findall('\d+', phoneWithName.group(1)))
+phoneWithTitle = re.search("((Legislative Office Phone)+.{12})", text)
+phone = "".join(re.findall('\d+', phoneWithTitle.group(1)))
 
 
 
-print string
+print phone
