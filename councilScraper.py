@@ -2,6 +2,7 @@ import csv
 import requests
 import re
 import bs4
+from os.path import basename, splitext
 
 from BeautifulSoup import BeautifulSoup
 
@@ -10,11 +11,11 @@ districtNumber = 1
 while districtNumber <= 51:
 
 	url = 'http://council.nyc.gov/d%d/html/members/home.shtml' % (districtNumber)
-	print url
 	response = requests.get(url)
 	html = response.content
 	soup = BeautifulSoup(html)
 
+	imageHTML = soup.find('td', attrs={'class' : 'inside_top_image'})
 	contactInfoHTML = soup.find('td', attrs={'class' : 'nav_text'})
 	contactInfo = contactInfoHTML.text.replace('&nbsp;', '')
 
@@ -37,4 +38,19 @@ while districtNumber <= 51:
 	  			else: 
 	  				print "no email found"
 
+	def getImageData():
+	 	if  imageHTML:
+	 		for img in imageHTML.findAll('img'):
+	 			memberName = img.get('alt')
+    			img['src'] = splitext(img['src'])[0]
+    			imageURL =  'http://council.nyc.gov/d%d/%s.jpg' % (districtNumber, img['src'][6:])
+    			print imageURL
+	 	else: 
+	 		print 'no imageHTML'
+
+
+
+
+
+	getImageData()
 	districtNumber += 1
