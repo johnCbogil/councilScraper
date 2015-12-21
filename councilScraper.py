@@ -15,28 +15,26 @@ while districtNumber <= 51:
 	html = response.content
 	soup = BeautifulSoup(html)
 
-	tdNavText = soup.find('td', attrs={'class' : 'nav_text'})
-	text = tdNavText.text.replace('&nbsp;', '')
+	contactInfoHTML = soup.find('td', attrs={'class' : 'nav_text'})
+	contactInfo = contactInfoHTML.text.replace('&nbsp;', '')
 
 	def getLegislativePhone():
-		legislativePhoneWithTitle = re.search("((Legislative Office Phone)+.{12})", text)
+		legislativePhoneWithTitle = re.search("((Legislative Office Phone)+.{12})", contactInfo)
 		legislativePhone = "".join(re.findall('\d+', legislativePhoneWithTitle.group(0)))
 		print legislativePhone
 
 	def getDistrictPhone():
-		districtPhoneWithTitle = re.search("((District Office Phone)+.{12})", text)
+		districtPhoneWithTitle = re.search("((District Office Phone)+.{12})", contactInfo)
 		districtPhone = "".join(re.findall('\d+', districtPhoneWithTitle.group(0)))
 		print districtPhone
 
 	def getMailto():
-		for a in tdNavText.findAll('a'):
+		for a in contactInfoHTML.findAll('a'):
 			if 'mailto' in a['href']:
 	  			email = a.get('href')[7:]
 	  			if email:
 	  				print email
 	  			else: 
 	  				print "no email found"
-	  		
-	getMailto()
 
 	districtNumber += 1
