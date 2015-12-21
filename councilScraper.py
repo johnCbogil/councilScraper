@@ -48,9 +48,4 @@ while districtNumber <= 51:
 	 	else: 
 	 		print 'no imageHTML'
 
-
-
-
-
-	getImageData()
 	districtNumber += 1
