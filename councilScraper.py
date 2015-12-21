@@ -8,7 +8,13 @@ from BeautifulSoup import BeautifulSoup
 
 districtNumber = 1
 
-while districtNumber <= 51:
+list_of_leg_phones = []
+list_of_dis_phones = []
+list_of_emails = []
+list_of_names = []
+list_of_imageURLs = []
+
+while districtNumber <= 3:
 
 	url = 'http://council.nyc.gov/d%d/html/members/home.shtml' % (districtNumber)
 	response = requests.get(url)
@@ -19,10 +25,14 @@ while districtNumber <= 51:
 	contactInfoHTML = soup.find('td', attrs={'class' : 'nav_text'})
 	contactInfo = contactInfoHTML.text.replace('&nbsp;', '')
 
+
+
 	def getLegislativePhone():
 		legislativePhoneWithTitle = re.search("((Legislative Office Phone)+.{12})", contactInfo)
 		legislativePhone = "".join(re.findall('\d+', legislativePhoneWithTitle.group(0)))
-		print legislativePhone
+		list_of_leg_phones.append(legislativePhone)
+		print list_of_leg_phones
+
 
 	def getDistrictPhone():
 		districtPhoneWithTitle = re.search("((District Office Phone)+.{12})", contactInfo)
@@ -48,4 +58,13 @@ while districtNumber <= 51:
 	 	else: 
 	 		print 'no imageHTML'
 
-	districtNumber += 1
+	getLegislativePhone()
+	districtNumber += 1 		
+
+def writeToFile():
+	outfile = open("./members.csv", "wb")
+	writer = csv.writer(outfile)
+	writer.writerow(["Name", "LegPhone", "DisPhone", "Email", "imageURL"])
+
+
+	
