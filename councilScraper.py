@@ -32,12 +32,12 @@ while districtNumber <= 51:
 	contactInfo = contactInfoHTML.text.replace('&nbsp;', '')
 
 	def getLegislativePhone():
-		legislativePhoneWithTitle = re.search("((Legislative Office Phone)+.{12})", contactInfo)
+		legislativePhoneWithTitle = re.search("((Legislative Office Phone)+.{14})", contactInfo)
 		legislativePhone = "".join(re.findall('\d+', legislativePhoneWithTitle.group(0)))
 		list_of_leg_phones.append(legislativePhone)
 
 	def getDistrictPhone():
-		districtPhoneWithTitle = re.search("((District Office Phone)+.{12})", contactInfo)
+		districtPhoneWithTitle = re.search("((District Office Phone)+.{24})", contactInfo)
 		districtPhone = "".join(re.findall('\d+', districtPhoneWithTitle.group(0)))
 		list_of_dis_phones.append(districtPhone)
 
@@ -50,6 +50,7 @@ while districtNumber <= 51:
 	  			else: 
 	  				list_of_emails.append('n/a')
 
+# MEMBER NAMES MUST BE STANDARD CASING
 	def getImageData():
 	 	if  imageHTML:
 	 		for img in imageHTML.findAll('img'):
