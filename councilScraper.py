@@ -50,7 +50,6 @@ while districtNumber <= 51:
 	  			else: 
 	  				list_of_emails.append('n/a')
 
-# MEMBER NAMES MUST BE STANDARD CASING
 	def getImageData():
 	 	if  imageHTML:
 	 		for img in imageHTML.findAll('img'):
