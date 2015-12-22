@@ -14,6 +14,11 @@ list_of_emails = []
 list_of_names = []
 list_of_imageURLs = []
 
+def writeToFile():
+	outfile = open("./members.csv", "wb")
+	writer = csv.writer(outfile)
+	writer.writerow(["Name", "LegPhone", "DisPhone", "Email", "imageURL"])
+
 while districtNumber <= 3:
 
 	url = 'http://council.nyc.gov/d%d/html/members/home.shtml' % (districtNumber)
@@ -25,28 +30,24 @@ while districtNumber <= 3:
 	contactInfoHTML = soup.find('td', attrs={'class' : 'nav_text'})
 	contactInfo = contactInfoHTML.text.replace('&nbsp;', '')
 
-
-
 	def getLegislativePhone():
 		legislativePhoneWithTitle = re.search("((Legislative Office Phone)+.{12})", contactInfo)
 		legislativePhone = "".join(re.findall('\d+', legislativePhoneWithTitle.group(0)))
 		list_of_leg_phones.append(legislativePhone)
-		print list_of_leg_phones
-
 
 	def getDistrictPhone():
 		districtPhoneWithTitle = re.search("((District Office Phone)+.{12})", contactInfo)
 		districtPhone = "".join(re.findall('\d+', districtPhoneWithTitle.group(0)))
-		print districtPhone
+		list_of_dis_phones.append(districtPhone)
 
 	def getMailto():
 		for a in contactInfoHTML.findAll('a'):
 			if 'mailto' in a['href']:
 	  			email = a.get('href')[7:]
 	  			if email:
-	  				print email
+	  				list_of_emails.append(email)
 	  			else: 
-	  				print "no email found"
+	  				list_of_emails.append('n/a')
 
 	def getImageData():
 	 	if  imageHTML:
@@ -54,17 +55,14 @@ while districtNumber <= 3:
 	 			memberName = img.get('alt')
     			img['src'] = splitext(img['src'])[0]
     			imageURL =  'http://council.nyc.gov/d%d/%s.jpg' % (districtNumber, img['src'][6:])
-    			print imageURL
+    			list_of_imageURLs.append(imageURL)
+    			list_of_names.append(memberName)
 	 	else: 
-	 		print 'no imageHTML'
+	 		list_of_imageURLs.append('n/a')
 
-	getLegislativePhone()
+	getImageData()
 	districtNumber += 1 		
 
-def writeToFile():
-	outfile = open("./members.csv", "wb")
-	writer = csv.writer(outfile)
-	writer.writerow(["Name", "LegPhone", "DisPhone", "Email", "imageURL"])
 
 
 	
