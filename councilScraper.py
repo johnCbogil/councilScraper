@@ -1,7 +1,6 @@
 import csv
 import requests
 import re
-import bs4
 from os.path import basename, splitext
 
 from BeautifulSoup import BeautifulSoup
@@ -15,11 +14,13 @@ list_of_names = []
 list_of_imageURLs = []
 
 def writeToFile():
+	list_of_lists = [list_of_names, list_of_imageURLs, list_of_leg_phones, list_of_dis_phones, list_of_emails]
+	zipped_list = zip(*list_of_lists)
 	outfile = open("./members.csv", "wb")
 	writer = csv.writer(outfile)
-	writer.writerow(["Name", "LegPhone", "DisPhone", "Email", "imageURL"])
+	writer.writerows(zipped_list)
 
-while districtNumber <= 3:
+while districtNumber <= 51:
 
 	url = 'http://council.nyc.gov/d%d/html/members/home.shtml' % (districtNumber)
 	response = requests.get(url)
@@ -59,9 +60,15 @@ while districtNumber <= 3:
     			list_of_names.append(memberName)
 	 	else: 
 	 		list_of_imageURLs.append('n/a')
+	 		list_of_names.append('n/a')
 
 	getImageData()
-	districtNumber += 1 		
+	getLegislativePhone()
+	getDistrictPhone()
+	getMailto()
+	districtNumber += 1
+
+writeToFile() 		
 
 
 
